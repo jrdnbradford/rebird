@@ -44,15 +44,15 @@ jobs:
           load("data/tax.rda", envir = temp_env)
           old_tax <- temp_env$tax
           colnames(old_tax)
-          nrow(old_tax)
+          paste("Num rows:", nrow(new_tax))
 
           print("Retrieving taxonomy from eBird...")
           new_tax <- rebird::ebirdtaxonomy()
           colnames(new_tax)
-          nrow(new_tax)
-          new_tax <- new_tax[ nrow(new_tax) + 1 , ] <- NA # Test
+          paste("Num rows:", nrow(new_tax))
+          new_tax[ nrow(new_tax) + 1 , ] <- NA # Test
           colnames(new_tax)
-          nrow(new_tax)
+          paste("Num rows:", nrow(new_tax))
           needs_update <- identical(old_tax, new_tax)
 
           print(paste("Needs update?:", needs_update))
