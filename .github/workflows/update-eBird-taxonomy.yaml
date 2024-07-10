@@ -46,7 +46,7 @@ jobs:
 
           print("Retrieving taxonomy from eBird...")
           new_tax <- rebird::ebirdtaxonomy()
-          new_tax <- bind_rows(new_tax, new_tax) # Test
+          new_tax <- new_tax[ nrow(new_tax) + 1 , ] <- NA # Test
           needs_update <- identical(old_tax, new_tax)
 
           print(paste("Needs update?:", needs_update))
