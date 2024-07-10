@@ -44,7 +44,7 @@ jobs:
           load("data/tax.rda", envir = temp_env)
           old_tax <- temp_env$tax
           colnames(old_tax)
-          paste("Num rows:", nrow(new_tax))
+          paste("Num rows:", nrow(old_tax))
 
           print("Retrieving taxonomy from eBird...")
           new_tax <- rebird::ebirdtaxonomy()
