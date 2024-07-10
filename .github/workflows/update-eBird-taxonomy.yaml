@@ -3,13 +3,13 @@ name: update-eBird-taxonomy
 on:
   schedule:
     - cron: '0 13 * * 1' # Weekly on Mondays at 9AM EST
-  pull_request:
+  push:
     branches: [main, master]
 
 env:
-  ISSUE_TITLE: 'eBird Taxonomy requires Updating'
+  ISSUE_TITLE: 'eBird Taxonomy Requires Updating'
   ISSUE_BODY: |
-    This issue has been opened by the GitHub Action wokflow `update-eBird-taxonomy`.
+    This issue has been opened by the GitHub Action wokflow [`update-eBird-taxonomy`](/.github/workflows/update-eBird-taxonomy.yaml).
     The eBird taxonomy has updated. The `ebird::tax` dataset and accompanying documentation should be updated.
 
 jobs:
