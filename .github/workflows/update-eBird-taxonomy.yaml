@@ -58,7 +58,7 @@ jobs:
           needs_update <- !(identical(old_tax, new_tax))
       
           print(paste("Needs update?:", needs_update))
-          cat("paste0(result=", needs_update), "\n", file=Sys.getenv("GITHUB_OUTPUT"), append=TRUE)
+          cat(paste0("result=", needs_update), "\n", file=Sys.getenv("GITHUB_OUTPUT"), append=TRUE)
           cat(readLines(Sys.getenv("GITHUB_OUTPUT")), sep = "\n")
         shell: Rscript {0}
 
