@@ -1,0 +1,94 @@
+name: update-eBird-taxonomy
+
+on:
+  schedule:
+    - cron: '0 13 * * 1' # Weekly on Mondays at 9AM EST
+
+env:
+  ISSUE_TITLE: 'eBird Taxonomy requires Updating'
+  ISSUE_BODY: |
+    This issue has been opened by the GitHub Action wokflow `update-eBird-taxonomy`.
+    The eBird taxonomy has updated. The `ebird::tax` dataset and accompanying documentation should be updated.
+
+jobs:
+  taxonomy-check-job:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - name: checkout-step
+        uses: actions/checkout@v4
+
+      - name: setup-r-step
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+          r-version: '4.4.1'
+
+      - name: setup-r-dependencies-step
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: local::.
+
+      - name: check-taxonomy-step
+        id: check-taxonomy
+        run: |
+          #!/usr/bin/env Rscript
+          print("Loading current taxonomy...")
+          temp_env <- new.env()
+          load("data/tax.rda", envir = temp_env)
+          old_tax <- temp_env$tax
+
+          print("Retrieving taxonomy from eBird...")
+          new_tax <- rebird::ebirdtaxonomy()
+          needs_update <- identical(old_tax, new_tax)
+
+          print(paste("Needs update?:", needs_update))
+          needs_update
+        shell: Rscript {0}
+
+  check-and-create-issue-job:
+    needs: taxonomy-check-job
+    if: ${{ needs.taxonomy-check-job.outputs.result == 'FALSE' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: check-issue-step
+        id: check-issue
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = process.env.ISSUE_TITLE;
+            const { owner, repo } = context.repo;
+
+            const issues = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+            });
+
+            const existingIssue = issues.data.find(issue => issue.title === issueTitle);
+
+            if (existingIssue) {
+              return { exists: true, number: existingIssue.number };
+            } else {
+              return { exists: false };
+            }
+
+      - name: create-issue-step
+        if: ${{ !steps.check-issue-step.outputs.exists }}
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueTitle = process.env.ISSUE_TITLE;
+            const issueBody = process.env.ISSUE_BODY;
+            const { owner, repo } = context.repo;
+
+            await github.rest.issues.create({
+              owner,
+              repo,
+              title: issueTitle,
+              body: issueBody,
+            });
