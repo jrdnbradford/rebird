@@ -3,6 +3,8 @@ name: update-eBird-taxonomy
 on:
   schedule:
     - cron: '0 13 * * 1' # Weekly on Mondays at 9AM EST
+  pull_request:
+    branches: [main, master]
   push:
     branches: [main, master]
 
