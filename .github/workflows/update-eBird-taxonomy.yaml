@@ -50,13 +50,14 @@ jobs:
           new_tax <- rebird::ebirdtaxonomy()
           colnames(new_tax)
           paste("Num rows:", nrow(new_tax))
-          new_tax[ nrow(new_tax) + 1 , ] <- NA # Test
-          colnames(new_tax)
-          paste("Num rows:", nrow(new_tax))
+          # new_tax[ nrow(new_tax) + 1 , ] <- NA # Test
+          # colnames(new_tax)
+          # paste("Num rows:", nrow(new_tax))
           needs_update <- !(identical(old_tax, new_tax))
 
           print(paste("Needs update?:", needs_update))
           invisible(needs_update)
+          cat("::set-output name=result::", needs_update, "\n")
         shell: Rscript {0}
 
   check-and-create-issue-job:
