@@ -93,13 +93,13 @@ jobs:
             const existingIssue = issues.data.find(issue => issue.title === issueTitle);
 
             if (existingIssue) {
-              return { exists: true, number: existingIssue.number };
+              return { exists: 'true', number: existingIssue.number };
             } else {
-              return { exists: false };
+              return { exists: 'false' };
             }
 
       - name: create-issue-step
-        if: ${{ !steps.check-issue-step.outputs.exists }}
+        if: ${{ steps.check-issue.outputs.exists == 'false' }}
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
