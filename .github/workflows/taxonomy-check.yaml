@@ -14,10 +14,12 @@ env:
   ISSUE_BODY: |
     This issue has been opened by the GitHub Action workflow `taxonomy-check`.
 
-    The `tax` dataset is different than data retrieved using `rebird::ebirdtaxonomy()`. Potential causes of this include:
+    The `tax` dataset is different than data retrieved using `rebird::ebirdtaxonomy()`. Potential causes of this could include:
+      * an update to the eBird taxonomy
       * issues with eBird's API
       * different versions of R/packages resulting in data being loaded, retrieved, compared, and/or saved differently
-      * an update to the eBird taxonomy
+
+    Check if there has been an update to eBird's taxonomy data. If not, investigate the other potential causes.
 
 jobs:
   taxonomy-check-job:

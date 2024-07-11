@@ -12,10 +12,10 @@ old_tax <- temp_env$tax
 paste("Current rebird taxonomy has", ncol(old_tax), "columns and", nrow(old_tax), "rows")
 
 print("Retrieving taxonomy from eBird...")
-new_tax <- head(rebird::ebirdtaxonomy())
+new_tax <- rebird::ebirdtaxonomy()
 paste("The latest taxonomy from eBird has", ncol(new_tax), "columns and", nrow(new_tax), "rows")
-needs_update <- !(compare_dataframes(old_tax, new_tax))
 
+needs_update <- !(compare_dataframes(old_tax, new_tax))
 print(paste("Needs update?:", needs_update))
 if (needs_update) print("The next job to create an issue should run.")
-cat(paste0("result=", needs_update), file=Sys.getenv("GITHUB_OUTPUT"), append=TRUE)
+cat(paste0("result=", needs_update), file = Sys.getenv("GITHUB_OUTPUT"), append = TRUE)
