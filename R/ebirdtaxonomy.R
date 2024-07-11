@@ -70,6 +70,7 @@ ebirdtaxonomy <- function(cat=NULL, locale=NULL, species = NULL, key = NULL, ...
   tax <- ebird_GET(paste0(ebase(), 'ref/taxonomy/ebird'), args, key = key, ...)
   tax$comNameCodes <- sort_comma_separated(tax$comNameCodes)
   tax$sciNameCodes <- sort_comma_separated(tax$sciNameCodes)
+  # tax <- order(tax[, "sciName"])
   tax
 }
 
