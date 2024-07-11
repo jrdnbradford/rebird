@@ -74,8 +74,6 @@ jobs:
   check-and-create-issue-job:
     needs: taxonomy-check-job
     if: needs.taxonomy-check-job.outputs.result == 'TRUE'
-    outputs:
-      exists: ${{ steps.check-issue.outputs.exists }}
     runs-on: ubuntu-latest
     steps:
       - name: check-issue-step
