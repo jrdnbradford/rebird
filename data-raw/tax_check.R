@@ -7,13 +7,12 @@ compare_dataframes <- function(df1, df2) {
 
 print("Loading current taxonomy...")
 temp_env <- new.env()
-# load("data/tax.rda", envir = temp_env)
 data("tax", envir = temp_env)
 old_tax <- temp_env$tax
 paste("Current rebird taxonomy has", ncol(old_tax), "columns and", nrow(old_tax), "rows")
 
 print("Retrieving taxonomy from eBird...")
-new_tax <- rebird::ebirdtaxonomy()
+new_tax <- head(rebird::ebirdtaxonomy())
 paste("The latest taxonomy from eBird has", ncol(new_tax), "columns and", nrow(new_tax), "rows")
 needs_update <- !(compare_dataframes(old_tax, new_tax))
 
