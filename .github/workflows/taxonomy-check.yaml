@@ -1,4 +1,4 @@
-name: update-eBird-taxonomy
+name: taxonomy-check
 
 on:
   schedule:
@@ -54,14 +54,16 @@ jobs:
           load("data/tax.rda", envir = temp_env)
           old_tax <- temp_env$tax
           paste("Num columns:", ncol(old_tax))
-          paste("Column names", colnames(old_tax))
+          print("Column names:")
+          colnames(old_tax))
           paste("Num rows:", nrow(old_tax))
       
           print("Retrieving taxonomy from eBird...")
           new_tax <- rebird::ebirdtaxonomy()
           colnames(new_tax)
           paste("Num columnss:", ncol(new_tax))
-          paste("Column names", colnames(new_tax))
+          print("Column names:")
+          colnames(new_tax))
           paste("Num rows:", nrow(new_tax))
           needs_update <- !(compare_dataframes(old_tax, new_tax))
       
