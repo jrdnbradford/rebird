@@ -82,7 +82,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const core = require('@actions/core');
             const issueTitle = process.env.ISSUE_TITLE;
             const { owner, repo } = context.repo;
 
