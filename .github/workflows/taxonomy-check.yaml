@@ -60,7 +60,6 @@ jobs:
       
           print("Retrieving taxonomy from eBird...")
           new_tax <- rebird::ebirdtaxonomy()
-          colnames(new_tax)
           paste("Latest num columns:", ncol(new_tax))
           print("Latest column names:")
           colnames(new_tax)
@@ -75,6 +74,8 @@ jobs:
   check-and-create-issue-job:
     needs: taxonomy-check-job
     if: needs.taxonomy-check-job.outputs.result == 'TRUE'
+    outputs:
+      exists: ${{ steps.check-isseu.outputs.exists }}
     runs-on: ubuntu-latest
     steps:
       - name: check-issue-step
