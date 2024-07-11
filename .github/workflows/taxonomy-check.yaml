@@ -82,6 +82,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const core = require('@actions/core');
             const issueTitle = process.env.ISSUE_TITLE;
             const { owner, repo } = context.repo;
 
@@ -94,9 +95,9 @@ jobs:
             const existingIssue = issues.data.find(issue => issue.title === issueTitle);
 
             if (existingIssue) {
-              return { exists: 'true', number: existingIssue.number };
+              core.setOutput('exists', 'true');
             } else {
-              return { exists: 'false' };
+              core.setOutput('exists', 'false');
             }
 
       - name: create-issue-step
@@ -108,11 +109,10 @@ jobs:
             const issueTitle = process.env.ISSUE_TITLE;
             const issueBody = process.env.ISSUE_BODY;
             const { owner, repo } = context.repo;
-      
+
             await github.rest.issues.create({
               owner,
               repo,
               title: issueTitle,
               body: issueBody,
             });
-      
