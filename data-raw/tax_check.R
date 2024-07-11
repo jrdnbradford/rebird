@@ -14,7 +14,6 @@ paste("Current rebird taxonomy has", ncol(old_tax), "columns and", nrow(old_tax)
 
 print("Retrieving taxonomy from eBird...")
 new_tax <- rebird::ebirdtaxonomy()
-new_tax <- new_tax[do.call(order, new_tax), ]
 paste("The latest taxonomy from eBird has", ncol(new_tax), "columns and", nrow(new_tax), "rows")
 
 needs_update <- !(identical(old_tax, new_tax))

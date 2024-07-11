@@ -67,5 +67,21 @@ ebirdtaxonomy <- function(cat=NULL, locale=NULL, species = NULL, key = NULL, ...
     key <- ""
   }
   
-  ebird_GET(paste0(ebase(), 'ref/taxonomy/ebird'), args, key = key, ...)
+  tax <- ebird_GET(paste0(ebase(), 'ref/taxonomy/ebird'), args, key = key, ...)
+  tax$comNameCodes <- sort_comma_separated(tax$comNameCodes)
+  tax$sciNameCodes <- sort_comma_separated(tax$sciNameCodes)
+  tax
+}
+
+sort_comma_separated <- function(x) {
+  sapply(strsplit(as.character(x), ","), function(x) {
+    x <- x[x != ""]  # remove empty strings
+    if (length(x) == 0) {
+      return(NA_character_)
+    } else if (length(x) == 1) {
+      return(x)
+    } else {
+      return(paste(sort(x), collapse = ","))
+    }
+  })
 }
