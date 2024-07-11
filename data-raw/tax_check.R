@@ -7,15 +7,18 @@ compare_dataframes <- function(df1, df2) {
 
 print("Loading current taxonomy...")
 temp_env <- new.env()
-load("data/tax.rda", envir = temp_env)
+data("tax", envir = temp_env)
 old_tax <- temp_env$tax
+old_tax <- old_tax[do.call(order, old_tax), ]
 paste("Current rebird taxonomy has", ncol(old_tax), "columns and", nrow(old_tax), "rows")
 
 print("Retrieving taxonomy from eBird...")
 new_tax <- rebird::ebirdtaxonomy()
+new_tax <- new_tax[do.call(order, new_tax), ]
 paste("The latest taxonomy from eBird has", ncol(new_tax), "columns and", nrow(new_tax), "rows")
 
-needs_update <- !(compare_dataframes(old_tax, new_tax))
+needs_update <- !(identical(old_tax, new_tax))
+
 print(paste("Needs update?:", needs_update))
 if (needs_update) print("The next job to create an issue should run.")
 cat(paste0("result=", needs_update), file=Sys.getenv("GITHUB_OUTPUT"), append=TRUE)
